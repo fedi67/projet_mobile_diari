@@ -72,6 +72,11 @@ flutter:
     - lib/assets/images/sarra.jpg
     - lib/assets/images/ali.jpg
     - lib/assets/images/mariem.jpg
+    - lib/assets/images/fish.jpg
+    - lib/assets/images/shrimp.jpg
+    - lib/assets/images/seafood_pasta.jpg
+    - lib/assets/images/tuna_salad.jpg
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

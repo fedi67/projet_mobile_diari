@@ -4,12 +4,37 @@ const Color _primary = Color(0xFFEE8C2B);
 const Color _backgroundLight = Color(0xFFF8F7F6);
 
 class DishDetailsPage extends StatelessWidget {
-  const DishDetailsPage({super.key});
+  final String? dishName;
+  final String? dishPrice;
+  final String? dishImage;
+  final String? cookName;
+  final String? cookImage;
+  final double? rating;
+  final String? location;
+  final String? description;
+  final List<String>? ingredients;
+  final String? preparationTime;
+  final List<String>? tags;
+
+  const DishDetailsPage({
+    super.key,
+    this.dishName,
+    this.dishPrice,
+    this.dishImage,
+    this.cookName,
+    this.cookImage,
+    this.rating,
+    this.location,
+    this.description,
+    this.ingredients,
+    this.preparationTime,
+    this.tags,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: TextDirection.rtl, // مهم للعربية
+      textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: _backgroundLight,
         appBar: AppBar(
@@ -22,65 +47,64 @@ class DishDetailsPage extends StatelessWidget {
           ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context), // يرجع للـ Home
+            onPressed: () => Navigator.pop(context),
           ),
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.only(
-            bottom: 140,
-          ), // space للـ buttons اللي تحت
+          padding: const EdgeInsets.only(bottom: 140),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // ----- صورة الهيدر -----
+              // صورة الهيدر
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Container(
+                  child: Image.asset(
+                    dishImage ?? 'assets/images/koski.jpg',
                     height: 220,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                          'lib/assets/images/koski.jpg', // صورتك من المشروع
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        height: 220,
+                        color: Colors.grey.shade200,
+                        child: Icon(Icons.restaurant, size: 60, color: Colors.grey.shade400),
+                      );
+                    },
                   ),
                 ),
               ),
 
-              // ----- عنوان الطبق / السعر / الريفيو -----
+              // عنوان الطبق / السعر / الريفيو
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const Text(
-                      'كسكسي بالحم',
+                    Text(
+                      dishName ?? 'كسكسي بالحم',
                       textAlign: TextAlign.right,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
                     ),
                     const SizedBox(height: 4),
-                    const Text(
-                      '15 دينار',
+                    Text(
+                      '${dishPrice ?? "15"} دينار',
                       textAlign: TextAlign.right,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: _primary,
                       ),
                     ),
                     const SizedBox(height: 4),
-                    const Text(
-                      'من اعداد مريم',
+                    Text(
+                      'من اعداد ${cookName ?? "مريم"}',
                       textAlign: TextAlign.right,
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                      style: const TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                     const SizedBox(height: 8),
                     Row(
@@ -95,19 +119,11 @@ class DishDetailsPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Row(
-                          children: const [
-                            Icon(Icons.star, size: 20, color: _primary),
-                            Icon(Icons.star, size: 20, color: _primary),
-                            Icon(Icons.star, size: 20, color: _primary),
-                            Icon(Icons.star, size: 20, color: _primary),
-                            Icon(Icons.star_half, size: 20, color: _primary),
-                          ],
-                        ),
+                        _buildStars(rating ?? 4.5),
                         const SizedBox(width: 8),
-                        const Text(
-                          '4.5',
-                          style: TextStyle(
+                        Text(
+                          (rating ?? 4.5).toStringAsFixed(1),
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Colors.black87,
@@ -120,7 +136,7 @@ class DishDetailsPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // ----- كارت "عن هذا الطبق" -----
+              // كارت "عن هذا الطبق"
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Container(
@@ -139,19 +155,19 @@ class DishDetailsPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const Text(
-                        'تفاصيل الكسكسي',
-                        style: TextStyle(
+                      Text(
+                        'تفاصيل ${dishName ?? "الكسكسي"}',
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.right,
                       ),
                       const SizedBox(height: 8),
-                      const Text(
-                        'كسكسي تونسي دياري بلحم العلوش، بنّة عالمية و اللحم طايب في حقّو.',
+                      Text(
+                        description ?? 'كسكسي تونسي دياري بلحم العلوش، بنّة عالمية و اللحم طايب في حقّو.',
                         textAlign: TextAlign.right,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           height: 1.6,
                           color: Colors.black87,
@@ -162,12 +178,9 @@ class DishDetailsPage extends StatelessWidget {
                         spacing: 8,
                         runSpacing: 8,
                         alignment: WrapAlignment.end,
-                        children: const [
-                          _TagChip(label: 'لحم علوش'),
-                          _TagChip(label: 'فلفل مقلي'),
-                          _TagChip(label: 'بطاطا'),
-                          _TagChip(label: 'قرع'),
-                        ],
+                        children: (ingredients ?? ['لحم علوش', 'فلفل مقلي', 'بطاطا', 'قرع'])
+                            .map((ingredient) => _TagChip(label: ingredient))
+                            .toList(),
                       ),
                     ],
                   ),
@@ -175,7 +188,7 @@ class DishDetailsPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // ----- كارت البلاصة و الوقت -----
+              // كارت البلاصة و الوقت
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Container(
@@ -205,31 +218,31 @@ class DishDetailsPage extends StatelessWidget {
                       const SizedBox(height: 12),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
+                        children: [
                           Text(
-                            'في العوينة',
-                            style: TextStyle(
+                            'في ${location ?? "العوينة"}',
+                            style: const TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
                             ),
                           ),
-                          SizedBox(width: 6),
-                          Icon(Icons.location_on, color: _primary),
+                          const SizedBox(width: 6),
+                          const Icon(Icons.location_on, color: _primary),
                         ],
                       ),
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
+                        children: [
                           Text(
-                            'متوفر مع نصف النهار',
-                            style: TextStyle(
+                            preparationTime ?? 'متوفر مع نصف النهار',
+                            style: const TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
                             ),
                           ),
-                          SizedBox(width: 6),
-                          Icon(Icons.schedule, color: _primary),
+                          const SizedBox(width: 6),
+                          const Icon(Icons.schedule, color: _primary),
                         ],
                       ),
                     ],
@@ -238,7 +251,7 @@ class DishDetailsPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // ----- كارت "مطبخ فاطمة" -----
+              // كارت "مطبخ الطباخ"
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Container(
@@ -259,10 +272,21 @@ class DishDetailsPage extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(999),
                         child: Image.asset(
-                          'lib/assets/images/mariem.jpg', // ولا صورة فاطمة من عندك
+                          cookImage ?? 'assets/images/mariem.jpg',
                           height: 64,
                           width: 64,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              height: 64,
+                              width: 64,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(Icons.person, color: Colors.grey.shade400),
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -270,9 +294,9 @@ class DishDetailsPage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            const Text(
-                              'مطبخ مريم',
-                              style: TextStyle(
+                            Text(
+                              'مطبخ ${cookName ?? "مريم"}',
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -281,17 +305,17 @@ class DishDetailsPage extends StatelessWidget {
                             const SizedBox(height: 4),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: const [
+                              children: [
                                 Text(
-                                  '4.8',
-                                  style: TextStyle(
+                                  (rating ?? 4.8).toStringAsFixed(1),
+                                  style: const TextStyle(
                                     fontSize: 13,
                                     color: Colors.grey,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                SizedBox(width: 4),
-                                Icon(Icons.star, size: 16, color: Colors.amber),
+                                const SizedBox(width: 4),
+                                const Icon(Icons.star, size: 16, color: Colors.amber),
                               ],
                             ),
                             const SizedBox(height: 6),
@@ -299,10 +323,9 @@ class DishDetailsPage extends StatelessWidget {
                               spacing: 6,
                               runSpacing: 6,
                               alignment: WrapAlignment.end,
-                              children: const [
-                                _OutlineTag(label: 'وصفات عائلية'),
-                                _OutlineTag(label: 'أفضل الطهاة'),
-                              ],
+                              children: (tags ?? ['وصفات عائلية', 'أفضل الطهاة'])
+                                  .map((tag) => _OutlineTag(label: tag))
+                                  .toList(),
                             ),
                           ],
                         ),
@@ -315,15 +338,31 @@ class DishDetailsPage extends StatelessWidget {
             ],
           ),
         ),
-
-        // ----- الأزرار + الـ Bottom Nav -----
-        bottomNavigationBar: const _BottomArea(),
+        bottomNavigationBar: _BottomArea(
+          dishName: dishName,
+          dishPrice: dishPrice,
+        ),
       ),
     );
   }
-}
 
-/* --------------------------- TAG WIDGETS --------------------------- */
+  Widget _buildStars(double rating) {
+    int fullStars = rating.floor();
+    bool hasHalfStar = (rating - fullStars) >= 0.5;
+    
+    return Row(
+      children: List.generate(5, (index) {
+        if (index < fullStars) {
+          return const Icon(Icons.star, size: 20, color: _primary);
+        } else if (index == fullStars && hasHalfStar) {
+          return const Icon(Icons.star_half, size: 20, color: _primary);
+        } else {
+          return const Icon(Icons.star_border, size: 20, color: _primary);
+        }
+      }),
+    );
+  }
+}
 
 class _TagChip extends StatelessWidget {
   final String label;
@@ -375,10 +414,11 @@ class _OutlineTag extends StatelessWidget {
   }
 }
 
-/* -------------------- BOTTOM ACTIONS + NAV BAR -------------------- */
-
 class _BottomArea extends StatelessWidget {
-  const _BottomArea();
+  final String? dishName;
+  final String? dishPrice;
+
+  const _BottomArea({this.dishName, this.dishPrice});
 
   @override
   Widget build(BuildContext context) {
@@ -399,12 +439,11 @@ class _BottomArea extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // أزرار الأكشن
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  // TODO: من هنا تعمل منطق الطلب
+                  showOrderBottomSheet(context, dishName, dishPrice);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _primary,
@@ -425,7 +464,7 @@ class _BottomArea extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton.icon(
                 onPressed: () {
-                  // TODO: من هنا تفتح شاشة التقييم
+                  showRatingBottomSheet(context, dishName);
                 },
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: _primary.withOpacity(0.6)),
@@ -447,20 +486,16 @@ class _BottomArea extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-
-            // Bottom Navigation
             const Divider(),
             BottomNavigationBar(
-              currentIndex: 0, // Home selected
+              currentIndex: 0,
               type: BottomNavigationBarType.fixed,
               selectedItemColor: _primary,
               unselectedItemColor: Colors.grey,
               onTap: (index) {
                 if (index == 0) {
-                  // رجوع للـ Home
                   Navigator.pop(context);
                 }
-                // البقية تكمّلهم كي تعمل صفحات الطلبات/الرسائل/الحساب
               },
               items: const [
                 BottomNavigationBarItem(
@@ -486,4 +521,523 @@ class _BottomArea extends StatelessWidget {
       ),
     );
   }
+}
+
+// Bottom Sheet pour la commande
+void showOrderBottomSheet(BuildContext context, String? dishName, String? dishPrice) {
+  int quantity = 1;
+  final TextEditingController noteController = TextEditingController();
+  final double price = double.tryParse(dishPrice ?? '15') ?? 15.0;
+
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Container(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Handle barre
+                    Container(
+                      width: 40,
+                      height: 4,
+                      margin: const EdgeInsets.only(bottom: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+
+                    // Icône et titre
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: _primary.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.shopping_bag,
+                        size: 40,
+                        color: _primary,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'اختر الكمية',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'كم عدد الأطباق التي تريد طلبها؟',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 32),
+
+                    // Sélecteur de quantité
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Bouton moins
+                        Container(
+                          decoration: BoxDecoration(
+                            color: _primary.withOpacity(0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              if (quantity > 1) {
+                                setState(() => quantity--);
+                              }
+                            },
+                            icon: const Icon(Icons.remove, color: _primary),
+                            iconSize: 28,
+                          ),
+                        ),
+                        
+                        const SizedBox(width: 32),
+                        
+                        // Affichage quantité
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [_primary, Color(0xFFFF9F4A)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: _primary.withOpacity(0.3),
+                                blurRadius: 12,
+                                offset: const Offset(0, 6),
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: Text(
+                              '$quantity',
+                              style: const TextStyle(
+                                fontSize: 48,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                        
+                        const SizedBox(width: 32),
+                        
+                        // Bouton plus
+                        Container(
+                          decoration: BoxDecoration(
+                            color: _primary.withOpacity(0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() => quantity++);
+                            },
+                            icon: const Icon(Icons.add, color: _primary),
+                            iconSize: 28,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Prix total
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            _primary.withOpacity(0.1),
+                            const Color(0xFFFFE4CC).withOpacity(0.3),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${price.toStringAsFixed(2)} دينار',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              const Text(
+                                'السعر للطبق الواحد:',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(height: 24),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${(price * quantity).toStringAsFixed(2)} دينار',
+                                style: const TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: _primary,
+                                ),
+                              ),
+                              const Text(
+                                'المجموع:',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Champ de note
+                    TextField(
+                      controller: noteController,
+                      textAlign: TextAlign.right,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        hintText: 'ملاحظة (اختياري)',
+                        hintStyle: TextStyle(color: Colors.grey.shade400),
+                        filled: true,
+                        fillColor: Colors.grey.shade50,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: _primary, width: 2),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Boutons
+                    Row(
+                      children: [
+                        // Bouton Annuler
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () => Navigator.pop(context),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              side: BorderSide(color: Colors.grey.shade300),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: const Text(
+                              'رجوع',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        // Bouton Confirmer
+                        Expanded(
+                          flex: 2,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              // Afficher le bottom sheet de notation après la commande
+                              Future.delayed(const Duration(milliseconds: 300), () {
+                                showRatingBottomSheet(context, dishName);
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: _primary,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 4,
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.check, size: 20),
+                                SizedBox(width: 8),
+                                Text(
+                                  'تأكيد الطلب',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
+// Bottom Sheet pour la notation
+void showRatingBottomSheet(BuildContext context, String? dishName) {
+  int rating = 0;
+  int hoverRating = 0;
+  final TextEditingController commentController = TextEditingController();
+
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Container(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Handle barre
+                    Container(
+                      width: 40,
+                      height: 4,
+                      margin: const EdgeInsets.only(bottom: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+
+                    // Titre
+                    const Text(
+                      'كيف كانت وجبتك؟',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      dishName ?? 'كسكسي تقليدي',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Image du plat
+                    Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: _primary.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: ClipOval(
+                        child: Image.asset(
+                          'assets/images/koski.jpg',
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              width: 80,
+                              height: 80,
+                              color: Colors.grey.shade200,
+                              child: const Icon(Icons.restaurant, size: 40),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Étoiles de notation
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(5, (index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() => rating = index + 1);
+                          },
+                          child: MouseRegion(
+                            onEnter: (_) => setState(() => hoverRating = index + 1),
+                            onExit: (_) => setState(() => hoverRating = 0),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 150),
+                              padding: const EdgeInsets.all(4),
+                              child:                                 Icon(
+                                (index < (hoverRating > 0 ? hoverRating : rating))
+                                    ? Icons.star
+                                    : Icons.star_border,
+                                size: 48,
+                                color: (index < (hoverRating > 0 ? hoverRating : rating))
+                                    ? Colors.amber
+                                    : Colors.grey.shade300,
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Champ de commentaire
+                    TextField(
+                      controller: commentController,
+                      textAlign: TextAlign.right,
+                      maxLines: 4,
+                      decoration: InputDecoration(
+                        hintText: '...اكتب تعليقك هنا',
+                        hintStyle: TextStyle(color: Colors.grey.shade400),
+                        filled: true,
+                        fillColor: Colors.grey.shade50,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: _primary, width: 2),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Bouton Envoyer
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: rating > 0
+                            ? () {
+                                // Enregistrer la notation
+                                Navigator.pop(context);
+                                
+                                // Afficher un message de confirmation
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          'شكراً على تقييمك!',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        Icon(Icons.check_circle, color: Colors.white),
+                                      ],
+                                    ),
+                                    backgroundColor: Colors.green,
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    margin: const EdgeInsets.all(16),
+                                    duration: const Duration(seconds: 2),
+                                  ),
+                                );
+                              }
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: rating > 0 ? _primary : Colors.grey.shade300,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: rating > 0 ? 4 : 0,
+                        ),
+                        child: Text(
+                          'إرسال التقييم',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: rating > 0 ? Colors.white : Colors.grey.shade500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    },
+  );
 }

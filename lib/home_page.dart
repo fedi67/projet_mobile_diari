@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dish_details_page.dart';
-import 'userinterface.dart'; // <--- J'ai ajouté l'import ici !
+import 'userinterface.dart'; 
+import 'category_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -136,13 +137,15 @@ class _HeaderWithSearch extends StatelessWidget {
 
 /* ------------------------------ CATEGORIES ----------------------------- */
 
+/* ------------------------------ CATEGORIES ----------------------------- */
+
 class _CategoriesSection extends StatelessWidget {
   const _CategoriesSection();
 
   @override
   Widget build(BuildContext context) {
     final categories = const [
-      _CategoryChip(label: 'تقليدي', emoji: '🍲', selected: true),
+      _CategoryChip(label: 'تقليدي', emoji: '🍲'),
       _CategoryChip(label: 'كسكسي', emoji: '🍝'),
       _CategoryChip(label: 'مقرونة', emoji: '🍜'),
       _CategoryChip(label: 'بحري', emoji: '🐟'),
@@ -174,36 +177,46 @@ class _CategoriesSection extends StatelessWidget {
 class _CategoryChip extends StatelessWidget {
   final String label;
   final String emoji;
-  final bool selected;
 
   const _CategoryChip({
     required this.label,
     required this.emoji,
-    this.selected = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final bg = selected
-        ? HomePage.primary.withOpacity(0.2)
-        : const Color(0xFFE5E5E5);
-    final textColor = selected ? HomePage.primary : const Color(0xFF374151);
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Row(
-        children: [
-          Text(emoji),
-          const SizedBox(width: 6),
-          Text(
-            label,
-            style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
+    return GestureDetector(
+      onTap: () {
+        // Navigation vers la page de catégorie
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryPage(
+              categoryName: label,
+              categoryEmoji: emoji,
+            ),
           ),
-        ],
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: const Color(0xFFE5E5E5),
+          borderRadius: BorderRadius.circular(999),
+        ),
+        child: Row(
+          children: [
+            Text(emoji),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: const TextStyle(
+                color: Color(0xFF374151),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
