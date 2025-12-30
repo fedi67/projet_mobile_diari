@@ -66,6 +66,14 @@ flutter:
   assets:
     - assets/background.jpg
     - assets/signupwithgoogle.png
+    - lib/assets/images/koski.jpg
+    - lib/assets/images/mloukhia.jpg
+    - lib/assets/images/ma9rouna.jpg
+    - lib/assets/images/sarra.jpg
+    - lib/assets/images/ali.jpg
+    - lib/assets/images/mariem.jpg
+
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
