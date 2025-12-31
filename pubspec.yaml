@@ -76,6 +76,10 @@ flutter:
     - lib/assets/images/shrimp.jpg
     - lib/assets/images/seafood_pasta.jpg
     - lib/assets/images/tuna_salad.jpg
+    - lib/assets/images/dessert1.jpg
+    - lib/assets/images/dessert2.jpg
+    - lib/assets/images/dessert3.jpg
+    - lib/assets/images/dessert4.jpg  
 
 
 
