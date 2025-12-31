@@ -70,7 +70,7 @@ class _UserInterfacePageState extends State<UserInterfacePage> {
                 ),
                 child: const CircleAvatar(
                   radius: 35,
-                  backgroundImage: AssetImage('lib/assets/images/sarra.jpg'),
+                  backgroundImage: AssetImage('lib/assets/images/sarra2.jpg'),
                 ),
               ),
               const SizedBox(width: 15),

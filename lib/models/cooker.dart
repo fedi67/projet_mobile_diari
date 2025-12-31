@@ -6,7 +6,7 @@ class Cooker {
   final double rating;
   final String bio;
 
-  const Cooker({
+  Cooker({
     required this.id,
     required this.name,
     required this.avatarUrl,

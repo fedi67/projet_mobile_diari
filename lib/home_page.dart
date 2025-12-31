@@ -6,6 +6,7 @@ import 'messages.dart';
 import 'dish_details_page.dart';
 import 'models/cooker.dart';
 import 'models/dish.dart';
+import 'all_dishes_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -616,21 +617,31 @@ class _BottomNavBar extends StatelessWidget {
       selectedItemColor: HomePage.primary,
       unselectedItemColor: Colors.grey,
       onTap: (index) {
-        if (index == 2) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const MessagesPage()),
-          );
-          return;
-        }
+  if (index == 1) {
+    // الطلبات
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const AllDishesPage()),
+    );
+    return;
+  }
 
-        if (index == 3) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const UserInterfacePage()),
-          );
-        }
-      },
+  if (index == 2) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const MessagesPage()),
+    );
+    return;
+  }
+
+  if (index == 3) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const UserInterfacePage()),
+    );
+  }
+},
+
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
         BottomNavigationBarItem(

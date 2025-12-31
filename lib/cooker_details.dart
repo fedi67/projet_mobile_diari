@@ -2,6 +2,189 @@ import 'package:flutter/material.dart';
 import 'models/cooker.dart';
 import 'cooker_messages.dart';
 
+// Base de données des plats par cuisinier
+class CookerDatabase {
+  static List<DishItem> getDishesForCooker(String cookerName) {
+    final dishes = {
+      'مريم بن علي': [
+        DishItem(
+          image: 'lib/assets/images/koski.jpg',
+          name: 'كسكسي تقليدي',
+          price: 'TND 15.50',
+          rating: 4.8,
+          location: 'عوينة',
+        ),
+        DishItem(
+          image: 'lib/assets/images/tajin.jpg',
+          name: 'طاجين دجاج',
+          price: 'TND 13.00',
+          rating: 4.9,
+          location: 'عوينة',
+        ),
+        DishItem(
+          image: 'lib/assets/images/mloukhia.jpg',
+          name: 'ملوخية باللحم',
+          price: 'TND 18.00',
+          rating: 4.7,
+          location: 'عوينة',
+        ),
+      ],
+      'علي الغربي': [
+        DishItem(
+          image: 'lib/assets/images/fish.jpg',
+          name: 'سمك مشوي',
+          price: 'TND 25.00',
+          rating: 4.9,
+          location: 'البحيرة',
+        ),
+        DishItem(
+          image: 'lib/assets/images/seafood_pasta.jpg',
+          name: 'مقرونة بالفواكه البحرية',
+          price: 'TND 18.00',
+          rating: 4.7,
+          location: 'البحيرة',
+        ),
+        DishItem(
+          image: 'lib/assets/images/mo9li.jpg',
+          name: 'صحن مقلي',
+          price: 'TND 22.00',
+          rating: 4.8,
+          location: 'البحيرة',
+        ),
+      ],
+      'سارة منصور': [
+        DishItem(
+          image: 'lib/assets/images/baklava.jpg',
+          name: 'بقلاوة تونسية',
+          price: 'TND 8.00',
+          rating: 4.9,
+          location: 'المنزه',
+        ),
+        DishItem(
+          image: 'lib/assets/images/makroudh.jpg',
+          name: 'مقروض القيروان',
+          price: 'TND 12.00',
+          rating: 4.8,
+          location: 'المنزه',
+        ),
+        DishItem(
+          image: 'lib/assets/images/yoyo.jpg',
+          name: 'يويو تونسي',
+          price: 'TND 10.00',
+          rating: 4.7,
+          location: 'المنزه',
+        ),
+      ],
+    };
+    return dishes[cookerName] ?? [];
+  }
+
+  static List<ReviewItem> getReviewsForCooker(String cookerName) {
+    final reviews = {
+      'مريم بن علي': [
+        ReviewItem(
+          userName: 'أ. أحمد م',
+          rating: 5,
+          comment: 'أحسن كسكسي! يذكّرني بطبخ أمي',
+          timeAgo: 'منذ يومين',
+        ),
+        ReviewItem(
+          userName: 'س. ليلى',
+          rating: 5,
+          comment: 'كان لذيذ برشا وخدمت بسرعة',
+          timeAgo: 'ساعة ضمّت',
+        ),
+        ReviewItem(
+          userName: 'أمل.ب',
+          rating: 5,
+          comment: 'توصيل سريع وكسكسي هايل',
+          timeAgo: 'منذ يوم',
+        ),
+      ],
+      'علي الغربي': [
+        ReviewItem(
+          userName: 'ياسين.ك',
+          rating: 5,
+          comment: 'سمك طازج وطريقة شواء ممتازة',
+          timeAgo: 'منذ 3 أيام',
+        ),
+        ReviewItem(
+          userName: 'فاطمة.ز',
+          rating: 5,
+          comment: 'القمرون كان طايب برشا',
+          timeAgo: 'منذ أسبوع',
+        ),
+        ReviewItem(
+          userName: 'م. سامي',
+          rating: 4,
+          comment: 'جيد لكن التوصيل تأخر شوية',
+          timeAgo: 'منذ يومين',
+        ),
+      ],
+      'سارة منصور': [
+        ReviewItem(
+          userName: 'نادية.ح',
+          rating: 5,
+          comment: 'البقلاوة روعة! مثل اللي تعمل أمي',
+          timeAgo: 'منذ يوم',
+        ),
+        ReviewItem(
+          userName: 'رضا.ب',
+          rating: 5,
+          comment: 'مقروض ممتاز، ننصح بيه',
+          timeAgo: 'منذ 5 أيام',
+        ),
+        ReviewItem(
+          userName: 'ل. منى',
+          rating: 4,
+          comment: 'حلو برشا، لكن نحب الكمية تكون أكثر',
+          timeAgo: 'منذ أسبوع',
+        ),
+      ],
+    };
+    return reviews[cookerName] ?? [];
+  }
+
+  static int getReviewCountForCooker(String cookerName) {
+    final counts = {
+      'مريم بن علي': 127,
+      'علي الغربي': 95,
+      'سارة منصور': 83,
+    };
+    return counts[cookerName] ?? 50;
+  }
+}
+
+class DishItem {
+  final String image;
+  final String name;
+  final String price;
+  final double rating;
+  final String location;
+
+  DishItem({
+    required this.image,
+    required this.name,
+    required this.price,
+    required this.rating,
+    required this.location,
+  });
+}
+
+class ReviewItem {
+  final String userName;
+  final int rating;
+  final String comment;
+  final String timeAgo;
+
+  ReviewItem({
+    required this.userName,
+    required this.rating,
+    required this.comment,
+    required this.timeAgo,
+  });
+}
+
 class CookerDetailsPage extends StatelessWidget {
   final Cooker cooker;
 
@@ -9,6 +192,11 @@ class CookerDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Récupérer les plats et avis spécifiques du cuisinier
+    final dishes = CookerDatabase.getDishesForCooker(cooker.name);
+    final reviews = CookerDatabase.getReviewsForCooker(cooker.name);
+    final reviewCount = CookerDatabase.getReviewCountForCooker(cooker.name);
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -23,7 +211,7 @@ class CookerDetailsPage extends StatelessWidget {
                   width: double.infinity,
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Color(0xFFD8826E), Color(0xFFEA8F78)],
+                      colors: [Color(0xFFEE8C2B), Color(0xFFEE8C2B)],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -90,7 +278,7 @@ class CookerDetailsPage extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 6),
                                   Text(
-                                    '(127 تقييم)',
+                                    '($reviewCount تقييم)',
                                     style: TextStyle(color: Colors.grey[600]),
                                   ),
                                 ],
@@ -161,6 +349,7 @@ class CookerDetailsPage extends StatelessWidget {
                     ),
                   ],
                 ),
+
                 // Available dishes section
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -179,27 +368,21 @@ class CookerDetailsPage extends StatelessWidget {
                       const SizedBox(height: 12),
                       SizedBox(
                         height: 230,
-                        child: ListView(
+                        child: ListView.separated(
                           scrollDirection: Axis.horizontal,
-                          children: [
-                            _DishSmallCard(
-                              image: 'lib/assets/images/koski.jpg',
-                              name: 'كسكسي تقليدي',
-                              price: '15.50 TND',
-                              cookName: 'فاطمة الغربي',
-                              rating: 4.8,
-                              location: 'المرسى',
-                            ),
-                            const SizedBox(width: 12),
-                            _DishSmallCard(
-                              image: 'lib/assets/images/mloukhia.jpg',
-                              name: 'طاجين دجاج',
-                              price: '13.00 TND',
-                              cookName: 'فاطمة الغربي',
-                              rating: 4.9,
-                              location: 'المرسى',
-                            ),
-                          ],
+                          itemCount: dishes.length,
+                          separatorBuilder: (_, __) => const SizedBox(width: 12),
+                          itemBuilder: (context, index) {
+                            final dish = dishes[index];
+                            return _DishSmallCard(
+                              image: dish.image,
+                              name: dish.name,
+                              price: dish.price,
+                              cookName: cooker.name,
+                              rating: dish.rating,
+                              location: dish.location,
+                            );
+                          },
                         ),
                       ),
                     ],
@@ -223,7 +406,7 @@ class CookerDetailsPage extends StatelessWidget {
                         textAlign: TextAlign.right,
                       ),
                       const SizedBox(height: 12),
-                      Card(
+                      ...reviews.map((review) => Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
@@ -234,36 +417,35 @@ class CookerDetailsPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
-                                    'أ. أحمد م',
-                                    style: TextStyle(
+                                  Text(
+                                    review.userName,
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                   Row(
-                                    children: const [
-                                      Icon(
+                                    children: [
+                                      const Icon(
                                         Icons.star,
                                         color: Colors.amber,
                                         size: 18,
                                       ),
-                                      SizedBox(width: 6),
-                                      Text('5'),
+                                      const SizedBox(width: 6),
+                                      Text('${review.rating}'),
                                     ],
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 8),
-                              const Text(
-                                'أحسن كسكسي! يذكّرني بطبخ أمي',
-                                style: TextStyle(height: 1.6),
+                              Text(
+                                review.comment,
+                                style: const TextStyle(height: 1.6),
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                'منذ يومين',
+                                review.timeAgo,
                                 style: TextStyle(
                                   color: Colors.grey[600],
                                   fontSize: 12,
@@ -272,107 +454,7 @@ class CookerDetailsPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ),
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'س. ليلى',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Row(
-                                    children: const [
-                                      Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                        size: 18,
-                                      ),
-                                      SizedBox(width: 6),
-                                      Text('5'),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              const Text(
-                                ' كان لذيذ برشا وخدمت بسرعة',
-                                style: TextStyle(height: 1.6),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'ساعةً مضت',
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'امل.ب',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Row(
-                                    children: const [
-                                      Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                        size: 18,
-                                      ),
-                                      SizedBox(width: 6),
-                                      Text('5'),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              const Text(
-                                'توصيل سريع وكسكسي هايل',
-                                style: TextStyle(height: 1.6),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'منذ يوم ',
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      )),
                       const SizedBox(height: 24),
                     ],
                   ),
@@ -390,7 +472,7 @@ class CookerDetailsPage extends StatelessWidget {
             height: 64,
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFD8826E),
+                backgroundColor: const Color(0xFFEE8C2B),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -461,6 +543,14 @@ class _DishSmallCard extends StatelessWidget {
                 height: 110,
                 width: double.infinity,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: 110,
+                    width: double.infinity,
+                    color: Colors.grey.shade200,
+                    child: const Icon(Icons.restaurant, size: 40),
+                  );
+                },
               ),
             ),
             Padding(
@@ -478,7 +568,7 @@ class _DishSmallCard extends StatelessWidget {
                   Text(
                     price,
                     style: const TextStyle(
-                      color: Color(0xFFD8826E),
+                      color: Color(0xFFEE8C2B),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -502,11 +592,15 @@ class _DishSmallCard extends StatelessWidget {
                         color: Colors.grey,
                       ),
                       const SizedBox(width: 4),
-                      Text(
-                        location,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
+                      Expanded(
+                        child: Text(
+                          location,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],

@@ -150,7 +150,7 @@ class CategoryPage extends StatelessWidget {
           rating: 4.9,
           price: '18.00',
           location: 'المنزه',
-          imageAsset: 'lib/assets/images/koski.jpg',
+          imageAsset: 'lib/assets/images/couscous.jpg',
           description: 'كسكسي باللحم الأحمر والخضار',
           ingredients: ['كسكسي', 'لحم غنمي', 'خضار', 'حمص', 'فلفل'],
           preparationTime: 'متوفر مع نصف النهار',
