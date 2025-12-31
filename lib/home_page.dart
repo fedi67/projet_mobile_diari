@@ -4,6 +4,8 @@ import 'category_page.dart';
 import 'cooker_details.dart';
 import 'messages.dart';
 import 'dish_details_page.dart';
+import 'models/cooker.dart';
+import 'models/dish.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -178,10 +180,7 @@ class _CategoryChip extends StatelessWidget {
   final String label;
   final String emoji;
 
-  const _CategoryChip({
-    required this.label,
-    required this.emoji,
-  });
+  const _CategoryChip({required this.label, required this.emoji});
 
   @override
   Widget build(BuildContext context) {
@@ -190,10 +189,8 @@ class _CategoryChip extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CategoryPage(
-              categoryName: label,
-              categoryEmoji: emoji,
-            ),
+            builder: (context) =>
+                CategoryPage(categoryName: label, categoryEmoji: emoji),
           ),
         );
       },
@@ -297,23 +294,7 @@ class _FeaturedDishesSection extends StatelessWidget {
   }
 }
 
-class Dish {
-  final String name;
-  final String price;
-  final String cookName;
-  final double rating;
-  final String location;
-  final String imageAsset;
-
-  Dish({
-    required this.name,
-    required this.price,
-    required this.cookName,
-    required this.rating,
-    required this.location,
-    required this.imageAsset,
-  });
-}
+// Dish model moved to lib/models/dish.dart
 
 class _DishCard extends StatelessWidget {
   final Dish dish;
@@ -326,7 +307,7 @@ class _DishCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => const DishDetailsPage()),
+          MaterialPageRoute(builder: (_) => DishDetailsPage(dish: dish)),
         );
       },
       child: SizedBox(
@@ -505,9 +486,18 @@ class _CookCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        final cooker = Cooker(
+          id: cook.name,
+          name: cook.name,
+          avatarUrl: cook.imageAsset,
+          location: cook.location,
+          rating: cook.rating,
+          bio: 'طباخة منزلية تقدم وصفات تقليدية وصحية. تواصل واطلب الآن.',
+        );
+
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => const CookerDetailsPage()),
+          MaterialPageRoute(builder: (_) => CookerDetailsPage(cooker: cooker)),
         );
       },
       child: Container(
