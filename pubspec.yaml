@@ -76,6 +76,7 @@ flutter:
     - lib/assets/images/shrimp.jpg
     - lib/assets/images/seafood_pasta.jpg
     - lib/assets/images/tuna_salad.jpg
+
     - lib/assets/images/tajin.jpg
     - lib/assets/images/sarra2.jpg
     - lib/assets/images/couscous.jpg
@@ -83,6 +84,14 @@ flutter:
     - lib/assets/images/makroudh.jpg
     - lib/assets/images/yoyo.jpg
     - lib/assets/images/mo9li.jpg
+
+    - lib/assets/images/dessert1.jpg
+    - lib/assets/images/dessert2.jpg
+    - lib/assets/images/dessert3.jpg
+    - lib/assets/images/dessert4.jpg  
+
+
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

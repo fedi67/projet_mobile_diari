@@ -4,6 +4,7 @@ import 'category_page.dart';
 import 'cooker_details.dart';
 import 'messages.dart';
 import 'dish_details_page.dart';
+import 'Desserts.dart'; // si tu veux garder DessertsPage
 import 'models/cooker.dart';
 import 'models/dish.dart';
 import 'all_dishes_page.dart';
@@ -52,7 +53,6 @@ class HomePage extends StatelessWidget {
 }
 
 /* --------------------------- HEADER + SEARCH --------------------------- */
-
 class _HeaderWithSearch extends StatelessWidget {
   const _HeaderWithSearch();
 
@@ -141,31 +141,97 @@ class _HeaderWithSearch extends StatelessWidget {
 }
 
 /* ------------------------------ CATEGORIES ----------------------------- */
-
 class _CategoriesSection extends StatelessWidget {
-  const _CategoriesSection();
+  const _CategoriesSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final categories = const [
-      _CategoryChip(label: 'تقليدي', emoji: '🍲'),
-      _CategoryChip(label: 'كسكسي', emoji: '🍝'),
-      _CategoryChip(label: 'مقرونة', emoji: '🍜'),
-      _CategoryChip(label: 'بحري', emoji: '🐟'),
-      _CategoryChip(label: 'حلويات', emoji: '🍰'),
+    final categories = [
+      _CategoryChip(
+        label: 'بحري',
+        emoji: '🐟',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) =>
+                  const CategoryPage(categoryName: 'بحري', categoryEmoji: '🐟'),
+            ),
+          );
+        },
+      ),
+      _CategoryChip(
+        label: 'كسكسي',
+        emoji: '🍝',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const CategoryPage(
+                categoryName: 'كسكسي',
+                categoryEmoji: '🍝',
+              ),
+            ),
+          );
+        },
+      ),
+      _CategoryChip(
+        label: 'مقرونة',
+        emoji: '🍜',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const CategoryPage(
+                categoryName: 'مقرونة',
+                categoryEmoji: '🍜',
+              ),
+            ),
+          );
+        },
+      ),
+      _CategoryChip(
+        label: 'تقليدي',
+        emoji: '🍲',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const CategoryPage(
+                categoryName: 'تقليدي',
+                categoryEmoji: '🍲',
+              ),
+            ),
+          );
+        },
+      ),
+      _CategoryChip(
+        label: 'حلويات',
+        emoji: '🍰',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const DessertsPage()),
+          );
+        },
+      ),
     ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'الأصناف',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            'التصنيفات',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
         ),
         const SizedBox(height: 12),
         SizedBox(
-          height: 48,
+          height: 60,
           child: ListView.separated(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             scrollDirection: Axis.horizontal,
             itemCount: categories.length,
             separatorBuilder: (_, __) => const SizedBox(width: 8),
@@ -180,21 +246,14 @@ class _CategoriesSection extends StatelessWidget {
 class _CategoryChip extends StatelessWidget {
   final String label;
   final String emoji;
+  final VoidCallback? onTap;
 
-  const _CategoryChip({required this.label, required this.emoji});
+  const _CategoryChip({required this.label, required this.emoji, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                CategoryPage(categoryName: label, categoryEmoji: emoji),
-          ),
-        );
-      },
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
@@ -220,7 +279,6 @@ class _CategoryChip extends StatelessWidget {
 }
 
 /* --------------------------- FEATURED DISHES --------------------------- */
-
 class _FeaturedDishesSection extends StatelessWidget {
   const _FeaturedDishesSection();
 
@@ -294,8 +352,6 @@ class _FeaturedDishesSection extends StatelessWidget {
     );
   }
 }
-
-// Dish model moved to lib/models/dish.dart
 
 class _DishCard extends StatelessWidget {
   final Dish dish;
@@ -409,7 +465,6 @@ class _DishCard extends StatelessWidget {
 }
 
 /* ----------------------------- BEST COOKS ------------------------------ */
-
 class _BestCooksSection extends StatelessWidget {
   const _BestCooksSection();
 
@@ -605,7 +660,6 @@ class _CookCard extends StatelessWidget {
 }
 
 /* -------------------------- BOTTOM NAVIGATION -------------------------- */
-
 class _BottomNavBar extends StatelessWidget {
   const _BottomNavBar();
 

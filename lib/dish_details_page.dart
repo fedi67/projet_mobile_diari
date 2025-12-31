@@ -535,7 +535,7 @@ void showOrderBottomSheet(BuildContext context, Dish dish) {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: _primary.withOpacity(0.1),
+                        color: _primary.withAlpha((0.1 * 255).round()),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
@@ -571,7 +571,7 @@ void showOrderBottomSheet(BuildContext context, Dish dish) {
                         // Bouton moins
                         Container(
                           decoration: BoxDecoration(
-                            color: _primary.withOpacity(0.1),
+                            color: _primary.withAlpha((0.1 * 255).round()),
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
@@ -600,7 +600,7 @@ void showOrderBottomSheet(BuildContext context, Dish dish) {
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color: _primary.withOpacity(0.3),
+                                color: _primary.withAlpha((0.3 * 255).round()),
                                 blurRadius: 12,
                                 offset: const Offset(0, 6),
                               ),
@@ -623,7 +623,7 @@ void showOrderBottomSheet(BuildContext context, Dish dish) {
                         // Bouton plus
                         Container(
                           decoration: BoxDecoration(
-                            color: _primary.withOpacity(0.1),
+                            color: _primary.withAlpha((0.1 * 255).round()),
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
@@ -645,8 +645,8 @@ void showOrderBottomSheet(BuildContext context, Dish dish) {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            _primary.withOpacity(0.1),
-                            const Color(0xFFFFE4CC).withOpacity(0.3),
+                            _primary.withAlpha((0.1 * 255).round()),
+                            Color(0xFFFFE4CC).withAlpha((0.3 * 255).round()),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -768,6 +768,7 @@ void showOrderBottomSheet(BuildContext context, Dish dish) {
                               Future.delayed(
                                 const Duration(milliseconds: 300),
                                 () {
+                                  // ignore: use_build_context_synchronously
                                   showRatingBottomSheet(context, dish);
                                 },
                               );
@@ -871,7 +872,7 @@ void showRatingBottomSheet(BuildContext context, Dish dish) {
                     Container(
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                        color: _primary.withOpacity(0.1),
+                        color: _primary.withAlpha((0.1 * 255).round()),
                         shape: BoxShape.circle,
                       ),
                       child: ClipOval(

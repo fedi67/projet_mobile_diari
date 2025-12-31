@@ -266,9 +266,9 @@ class _DishListItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
+            boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withAlpha((0.05 * 255).round()),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -325,7 +325,7 @@ class _DishListItem extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFEE8C2B).withOpacity(0.1),
+                          color: const Color(0xFFEE8C2B).withAlpha((0.1 * 255).round()),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
@@ -375,7 +375,7 @@ class _DishListItem extends StatelessWidget {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.amber.withOpacity(0.1),
+                          color: Colors.amber.withAlpha((0.1 * 255).round()),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
