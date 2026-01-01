@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart'; // <--- REQUIRED for kIsWeb
 import 'package:flutter/material.dart';
 import 'signup_page.dart';
 import 'home_page.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const DiariApp());
@@ -28,6 +31,76 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
+
+  // --- UPDATED SMART LOGIN FUNCTION ---
+  Future<void> loginUser() async {
+    // 1. Basic Validation
+    if (_email.text.isEmpty || _pass.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill in all fields")),
+      );
+      return;
+    }
+
+    // 2. SMART URL SELECTION
+    String baseUrl;
+    if (kIsWeb) {
+      // Running on Web (Edge, Chrome) -> Use localhost
+      baseUrl = 'http://localhost:3000';
+    } else {
+      // Running on Mobile (Android Emulator) -> Use 10.0.2.2
+      // If testing on a REAL phone, change this to your PC's IP (e.g., 192.168.1.5)
+      baseUrl = 'http://10.0.2.2:3000';
+    }
+
+    final String url = '$baseUrl/api/auth/login';
+    print("Trying to connect to: $url"); // Debug print
+
+    try {
+      // 3. Send the POST Request
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'email': _email.text,
+          'password': _pass.text,
+        }),
+      );
+
+      // 4. Check Response
+      if (response.statusCode == 200) {
+        // SUCCESS
+        var jsonResponse = jsonDecode(response.body);
+        print("Login Success: ${jsonResponse['message']}");
+
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const HomePage()),
+          );
+        }
+      } else {
+        // ERROR FROM SERVER
+        var jsonResponse = jsonDecode(response.body);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(jsonResponse['message'] ?? "Login Failed"),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      // NETWORK ERROR
+      print("Error: $e");
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Connection Error: $e")),
+        );
+      }
+    }
+  }
+  // ------------------------------------
 
   @override
   void dispose() {
@@ -113,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 20),
 
-                  //Password TextField
+                  // Password TextField
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -164,9 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 55,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const HomePage()),
-                        );
+                        loginUser();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFCB675B),
@@ -235,9 +306,14 @@ class _LoginPageState extends State<LoginPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          // NOTE: Ensure this image exists in your assets folder
                           Image.asset(
                             "assets/signupwithgoogle.png",
-                            fit: BoxFit.cover,
+                            height: 24,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.error); // Fallback if image missing
+                            },
                           ),
                           const SizedBox(width: 12),
                           Text(

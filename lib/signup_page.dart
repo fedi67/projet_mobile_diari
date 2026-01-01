@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:convert'; // For jsonEncode
+import 'package:http/http.dart' as http; // For connecting to backend
+import 'package:flutter/foundation.dart'; // REQUIRED: To check if running on Web (kIsWeb)
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -152,7 +155,8 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  void _register() {
+  Future<void> _register() async {
+    // 1. Validation
     if (_name.text.isEmpty ||
         _email.text.isEmpty ||
         _pass.text.isEmpty ||
@@ -166,8 +170,45 @@ class _SignupPageState extends State<SignupPage> {
       return;
     }
 
-    // ✔ هنا تعمل API مع backend Flask
-    _showMessage('تم إنشاء الحساب بنجاح ✔');
+    // 2. Prepare the URL (Automatically detects Web vs Android)
+    // If Web -> localhost, If Android -> 10.0.2.2
+    final String baseUrl = kIsWeb ? 'http://localhost:3000' : 'http://10.0.2.2:3000';
+    final url = Uri.parse('$baseUrl/api/auth/signup');
+
+    print("Attempting to connect to: $url"); // Debug print
+
+    try {
+      // 3. Send Data to Backend
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'username': _name.text,
+          'email': _email.text,
+          'password': _pass.text,
+        }),
+      );
+
+      print("Response Status: ${response.statusCode}"); // Debug print
+      print("Response Body: ${response.body}"); // Debug print
+
+      // 4. Check Response
+      if (response.statusCode == 201) {
+        _showMessage('تم إنشاء الحساب بنجاح! الرجاء تسجيل الدخول');
+        
+        // Wait 1 second then go to login page
+        await Future.delayed(const Duration(seconds: 1));
+        if (mounted) Navigator.pop(context); 
+      } else {
+        // Error from server (e.g., "User already exists")
+        final errorData = jsonDecode(response.body);
+        _showMessage(errorData['message'] ?? 'حدث خطأ ما');
+      }
+    } catch (e) {
+      // Network error (Server down, wrong IP, etc.)
+      print("Error: $e"); 
+      _showMessage('فشل الاتصال بالخادم. تأكد أن الباك اند يعمل');
+    }
   }
 
   void _showMessage(String msg) {
@@ -179,5 +220,3 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 }
-
-// End of file
